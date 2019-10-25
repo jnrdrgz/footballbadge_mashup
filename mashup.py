@@ -50,7 +50,7 @@ def extract_main_colors(im):
 	
 	#c = [x for x in most_colors if x[0] != (0,0,0,0) and x[0] != (255,255,255,0)]
 	c = [x for x in most_colors if x[0][3] != 0]
-
+	
 	#if len(c) > 1:
 	return c
 	#else:
@@ -100,15 +100,32 @@ def change_cols_two_imgs(im1, im2):
 
 	change_cols(im1, col1, col2)
 
+def name_creator(eq1,eq2):
+	if "-" in eq1:
+		eq1 = eq1.split("-")[0]
+	if "-" in eq2:
+		eq2 = eq2.split("-")[0]
+	n = "{}{}".format(eq1[:len(eq1)//2], eq2[len(eq2)//2:])
+	return n
+
+def test_main_colors(e):
+	im = Image.open("escudos/primera/{}.png".format(e))
+
+	print(extract_main_colors(im))
+
+#equipos a corregir:
+#river -> mas negro que rojo y blanco
+#indepdiente -> ??
+#argentinos -> mas azul que otro?
 def two_mash(ran=False, eq1=None,eq2=None):
 	base_dir = "escudos/primera/"	
 	if ran:
 		
 		fls = os.listdir("./"+base_dir)
-		eq1 = random.randint(0,len(fls)-1)
+		eq1 = fls.index("independiente.png")#random.randint(0,len(fls)-1)
 		eq2 = random.randint(0,len(fls)-1)
 		print("equipo1: {}\nequipo2: {}".format(fls[eq1],fls[eq2]))
-		print("forman: {}{}".format(fls[eq1][:len(fls[eq1])//2], fls[eq2][len(fls[eq2])//2:]))
+		print("forman: {}".format(name_creator(fls[eq1].replace(".png",""), fls[eq2].replace(".png",""))))
 		esc1 = Image.open(base_dir+fls[eq1])
 		esc2 = Image.open(base_dir+fls[eq2])
 		change_cols_two_imgs(esc1,esc2)
@@ -140,7 +157,10 @@ def two_mash(ran=False, eq1=None,eq2=None):
 #two_random_mash()
 
 if __name__ == '__main__':
-	if len(sys.argv) > 1:
-		two_mash(False, sys.argv[1], sys.argv[2]) 
+	if len(sys.argv) == 3:
+		if sys.argv[1] == "-tc":
+			test_main_colors(sys.argv[2])
+		else:
+			two_mash(False, sys.argv[1], sys.argv[2]) 
 	else:
 		two_mash(True)
