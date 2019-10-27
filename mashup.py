@@ -50,7 +50,10 @@ def extract_main_colors(im):
 	
 	#c = [x for x in most_colors if x[0] != (0,0,0,0) and x[0] != (255,255,255,0)]
 	c = [x for x in most_colors if x[0][3] != 0]
-	
+
+	p = "escudos/primera/"
+	if(im.filename == p+"river.png" or im.filename == p+"argentinos.png"):
+		c[2], c[1] = c[1], c[2]
 	#if len(c) > 1:
 	return c
 	#else:
@@ -85,14 +88,13 @@ def change_cols(esc, col, new_col):
 		for j in range(esc.size[1]):	
 			#if p[i,j] == col[0][0]: 
 			#	p[i,j] = new_col[0][0]
+			f=False
 			if cols_mas_menos_parecidos(p[i,j], col[0][0]): 
 				p[i,j] = new_col[0][0]
-
-	for i in range(esc.size[0]):
-		for j in range(esc.size[1]):	
-			#if p[i,j] == col[1][0]: 
-			if cols_mas_menos_parecidos(p[i,j], col[1][0]): 
-				p[i,j] = new_col[1][0]
+				f=True
+			if not f:
+				if cols_mas_menos_parecidos(p[i,j], col[1][0]): 
+					p[i,j] = new_col[1][0]
 
 def change_cols_two_imgs(im1, im2):
 	col1 = extract_main_colors(im1)
@@ -122,28 +124,29 @@ def two_mash(ran=False, eq1=None,eq2=None):
 	if ran:
 		
 		fls = os.listdir("./"+base_dir)
-		eq1 = fls.index("independiente.png")#random.randint(0,len(fls)-1)
+		eq1 = random.randint(0,len(fls)-1)#fls.index("independiente.png")
 		eq2 = random.randint(0,len(fls)-1)
 		print("equipo1: {}\nequipo2: {}".format(fls[eq1],fls[eq2]))
 		print("forman: {}".format(name_creator(fls[eq1].replace(".png",""), fls[eq2].replace(".png",""))))
 		esc1 = Image.open(base_dir+fls[eq1])
 		esc2 = Image.open(base_dir+fls[eq2])
 		change_cols_two_imgs(esc1,esc2)
-		esc1.show()
+		#esc1.show()
+		esc1.save('out.png')
 	else:
 		eq1 = eq1+".png"
 		eq2 = eq2+".png"
 		#print("equipo1: {}\nequipo2: {}".format(eq1,eq2))
 		#print("format: {}{}".format(eq1[:len(eq1)//2], eq2[len(eq2)//2:]))
 		
-		print("{} + {} forman:".format(eq1.replace(".png",""),eq2.replace(".png","")))
-		print("{}{}".format(eq1[:len(eq1)//2], eq2[len(eq2)//2:]))
-
+		print("equipo1: {}\nequipo2: {}".format(eq1,eq2))
+		print("forman: {}".format(name_creator(eq1.replace(".png",""), eq2.replace(".png",""))))
+		
 		esc1 = Image.open(base_dir+eq1)
 		esc2 = Image.open(base_dir+eq2)
 		change_cols_two_imgs(esc1,esc2)
-		esc1.show()
-
+		#esc1.show()
+		esc1.save('out.png')
 #change_cols(escArs, ars_cols, aldo_cols)
 #change_cols(escAld, aldo_cols, ars_cols)
 
