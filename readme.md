@@ -15,5 +15,6 @@ For now the program only displays the created badge.
 # Example
 
 <dl>
-	<img src="out.png">
+	<img src="escudos/primera/river.png" width="400" height="400"><img src="escudos/primera/boca.png" width="400" height="400">
+	<img src="out.png" width="400" height="400">
 </dl>
